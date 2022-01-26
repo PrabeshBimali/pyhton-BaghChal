@@ -42,6 +42,35 @@ def main():
 				run = False;
 
 
+			
+
+			
+
+			if game_instance.turn == "goat" and game_instance.board.unused_goats > 0:
+				game_instance.show_goat_moves()				
+		
+
+			if game_instance.turn == game_instance.ai:
+				ai = Ai()
+				best_move = ai.get_best_move(game_instance.board, game_instance.ai)[0]
+				if game_instance.ai == "goat":
+					if game_instance.board.unused_goats > 0:
+						time.sleep(2)
+						game_instance.select(best_move[2], best_move[3])
+					else:
+						game_instance.select(best_move[0], best_move[1])
+						time.sleep(3)
+						game_instance.select(best_move[2], best_move[3])
+
+				elif game_instance.ai == "bagh":
+					game_instance.select(best_move[0], best_move[1])
+					time.sleep(3)
+					game_instance.select(best_move[2], best_move[3])
+			else:
+				if event.type == pg.MOUSEBUTTONDOWN:
+					x, y = event.pos
+					send_row_and_col(x, y, game_instance)
+
 			if game_instance.board.is_game_over():
 				if game_instance.board.get_winner() == "bagh":
 					game_over_screen(clock, screen, "Bagh", game_instance)
@@ -51,39 +80,13 @@ def main():
 
 				game_instance = Game(screen, game_instance.ai)
 
-			else:
 
-				if game_instance.turn == "goat" and game_instance.board.unused_goats > 0:
-					game_instance.show_goat_moves()
-					print(game_instance.ai)
+			show_text(screen, "Turn", game_instance.turn, 850, 250)
+			show_text(screen, "Goats killed", str(game_instance.board.killed_goats), 850, 300)
+			show_text(screen, "Tigers trapped", str(game_instance.board.trapped_tigers), 850, 350)
+			show_text(screen, "unused goats", str(game_instance.board.unused_goats), 850, 400)			
+					
 
-				show_text(screen, "Turn", game_instance.turn, 850, 250)
-				show_text(screen, "Goats killed", str(game_instance.board.killed_goats), 850, 300)
-				show_text(screen, "Tigers trapped", str(game_instance.board.trapped_tigers), 850, 350)
-				show_text(screen, "unused goats", str(game_instance.board.unused_goats), 850, 400)
-			
-
-				if game_instance.turn == game_instance.ai:
-					ai = Ai()
-					best_move = ai.get_best_move(game_instance.board, game_instance.ai)[0]
-					if game_instance.ai == "goat":
-						if game_instance.board.unused_goats > 0:
-							time.sleep(2)
-							game_instance.select(best_move[2], best_move[3])
-						else:
-							game_instance.select(best_move[0], best_move[1])
-							time.sleep(3)
-							game_instance.select(best_move[2], best_move[3])
-
-					elif game_instance.ai == "bagh":
-						game_instance.select(best_move[0], best_move[1])
-						time.sleep(3)
-						game_instance.select(best_move[2], best_move[3])
-				else:
-					if event.type == pg.MOUSEBUTTONDOWN:
-						x, y = event.pos
-						send_row_and_col(x, y, game_instance)			
-						
 
 			game_instance.draw()
 			pg.display.update()
