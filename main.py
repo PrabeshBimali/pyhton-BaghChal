@@ -49,12 +49,13 @@ def main():
 				else:
 					game_over_screen(clock, screen, "Goat", game_instance)
 
-				game_instance = Game(screen, ai)
+				game_instance = Game(screen, game_instance.ai)
 
 			else:
 
 				if game_instance.turn == "goat" and game_instance.board.unused_goats > 0:
 					game_instance.show_goat_moves()
+					print(game_instance.ai)
 
 				show_text(screen, "Turn", game_instance.turn, 850, 250)
 				show_text(screen, "Goats killed", str(game_instance.board.killed_goats), 850, 300)
