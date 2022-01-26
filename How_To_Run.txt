@@ -1,0 +1,24 @@
+pip freeze > requirements.txt
+
+
+//
+// for playing against Goat AI
+//
+
+python main.py goat 
+
+
+//
+// for playing against Bagh AI
+//
+
+python main.py bagh
+
+ // or
+
+ python main.py
+
+
+//
+// Depth of minimax search can be increased by changing self.depth in Ai class inside baghchal/minimax.py 
+//
